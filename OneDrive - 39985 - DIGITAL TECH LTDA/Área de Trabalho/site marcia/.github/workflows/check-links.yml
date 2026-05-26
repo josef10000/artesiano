@@ -1,0 +1,23 @@
+name: Validar Links
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    # Roda automaticamente todo domingo a meia-noite
+    - cron: "0 0 * * 0"
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Checar links quebrados (Lychee)
+        uses: lycheeverse/lychee-action@v1.9.3
+        with:
+          # Verifica todos os arquivos HTML do projeto ignorando links de teste '#'
+          args: --verbose --no-progress --exclude-loopback './**/*.html'
